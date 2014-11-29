@@ -3,6 +3,8 @@ BarcodeScanner
 
 Cross-platform BarcodeScanner for Cordova / PhoneGap.
 
+On Android, it will use the front camera as per: http://stackoverflow.com/questions/25488284/cordova-barcodescanner-use-front-facing-camera
+
 Follows the [Cordova Plugin spec](http://cordova.apache.org/docs/en/3.0.0/plugin_ref_spec.md), so that it works with [Plugman](https://github.com/apache/cordova-plugman).
 
 ### Supported Platforms
