@@ -41,8 +41,8 @@ public final class CameraManager {
 
   private static final int MIN_FRAME_WIDTH = 240;
   private static final int MIN_FRAME_HEIGHT = 240;
-  private static final int MAX_FRAME_WIDTH = 600;
-  private static final int MAX_FRAME_HEIGHT = 400;
+  private static final int MAX_FRAME_WIDTH = 350;
+  private static final int MAX_FRAME_HEIGHT = 350;
 
   private final Context context;
   private final CameraConfigurationManager configManager;
@@ -212,15 +212,15 @@ public final class CameraManager {
       }
       int width = screenResolution.x * 3 / 4;
       if (width < MIN_FRAME_WIDTH) {
-        width = MIN_FRAME_WIDTH;
+        width = MIN_FRAME_WIDTH - 30;
       } else if (width > MAX_FRAME_WIDTH) {
-        width = MAX_FRAME_WIDTH;
+        width = MAX_FRAME_WIDTH - 70;
       }
       int height = screenResolution.y * 3 / 4;
       if (height < MIN_FRAME_HEIGHT) {
-        height = MIN_FRAME_HEIGHT;
+        height = MIN_FRAME_HEIGHT - 30;
       } else if (height > MAX_FRAME_HEIGHT) {
-        height = MAX_FRAME_HEIGHT;
+        height = MAX_FRAME_HEIGHT - 70;
       }
       int leftOffset = (screenResolution.x - width) / 2;
       int topOffset = (screenResolution.y - height) / 2;
@@ -247,10 +247,19 @@ public final class CameraManager {
         // Called early, before init even finished
         return null;
       }
-      rect.left = rect.left * cameraResolution.x / screenResolution.x;
+
+      // old
+      /* rect.left = rect.left * cameraResolution.x / screenResolution.x;
       rect.right = rect.right * cameraResolution.x / screenResolution.x;
       rect.top = rect.top * cameraResolution.y / screenResolution.y;
-      rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
+      rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y; */
+
+      // new
+      rect.left = rect.left * cameraResolution.y / screenResolution.x;
+      rect.right = rect.right * cameraResolution.y / screenResolution.x;
+      rect.top = rect.top * cameraResolution.x / screenResolution.y;
+      rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
+
       framingRectInPreview = rect;
     }
     return framingRectInPreview;
