@@ -54,6 +54,7 @@ public final class ViewfinderView extends View {
   private final int laserColor;
   private final int resultPointColor;
   private int scannerAlpha;
+  private final int marginColor;
   private List<ResultPoint> possibleResultPoints;
   private List<ResultPoint> lastPossibleResultPoints;
 
@@ -72,6 +73,7 @@ public final class ViewfinderView extends View {
     resultColor = resources.getColor(fakeR.getId("color", "result_view"));
     laserColor = resources.getColor(fakeR.getId("color", "viewfinder_laser"));
     resultPointColor = resources.getColor(fakeR.getId("color", "possible_result_points"));
+    marginColor = resources.getColor(fakeR.getId("color", "margin_color"));
     scannerAlpha = 0;
     possibleResultPoints = new ArrayList<ResultPoint>(5);
     lastPossibleResultPoints = null;
@@ -93,12 +95,39 @@ public final class ViewfinderView extends View {
     int width = canvas.getWidth();
     int height = canvas.getHeight();
 
+      paint.setColor(resultBitmap != null ? resultColor : marginColor);
+
+      int dmcLineWeight = 20;
+      int dmcLineWidthHorizontal = 50;
+      int dmcLineWidthVertical = 80 - dmcLineWeight;
+      int lineHorizontalPadding = frame.left+(((frame.bottom-frame.top)/2)-150)+dmcLineWeight;
+      int lineVerticalPadding = frame.top+((frame.bottom-frame.top)/2)-120;
+
+      canvas.drawRect(frame.left - dmcLineWeight, frame.top - dmcLineWeight, frame.left + dmcLineWidthHorizontal, frame.top, paint);
+      canvas.drawRect(frame.right - dmcLineWidthHorizontal, frame.top - dmcLineWeight, frame.right + dmcLineWeight, frame.top, paint);
+
+      canvas.drawRect(frame.left - dmcLineWeight, frame.bottom + 1, frame.left + dmcLineWidthHorizontal, frame.bottom + dmcLineWeight, paint);
+      canvas.drawRect(frame.right - dmcLineWidthHorizontal, frame.bottom + 1, frame.right + dmcLineWeight, frame.bottom + dmcLineWeight, paint);
+
+      canvas.drawRect(frame.left - dmcLineWeight, frame.top, frame.left, frame.top + dmcLineWidthHorizontal, paint);
+      canvas.drawRect(frame.left - dmcLineWeight, frame.bottom + 1 - dmcLineWidthHorizontal, frame.left, frame.bottom + 1, paint);
+
+      canvas.drawRect(frame.right, frame.top, frame.right + dmcLineWeight, frame.top + dmcLineWidthHorizontal, paint);
+      canvas.drawRect(frame.right, frame.bottom + 1 - dmcLineWidthHorizontal, frame.right + dmcLineWeight, frame.bottom + 1, paint);
+
+
+
     // Draw the exterior (i.e. outside the framing rect) darkened
-    paint.setColor(resultBitmap != null ? resultColor : maskColor);
-    canvas.drawRect(0, 0, width, frame.top, paint);
+    /* canvas.drawRect(0, 0, width, frame.top, paint);
     canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
     canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
-    canvas.drawRect(0, frame.bottom + 1, width, height, paint);
+    canvas.drawRect(0, frame.bottom + 1, width, height, paint); */
+
+
+
+
+
+
 
     if (resultBitmap != null) {
       // Draw the opaque result bitmap over the scanning rectangle
@@ -107,7 +136,7 @@ public final class ViewfinderView extends View {
     } else {
 
       // Draw a red "laser scanner" line through the middle to show decoding is active
-      paint.setColor(laserColor);
+      /* paint.setColor(laserColor);
       paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
       scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
       int middle = frame.height() / 2 + frame.top;
@@ -147,7 +176,7 @@ public final class ViewfinderView extends View {
                               radius, paint);
           }
         }
-      }
+      } */
 
       // Request another update at the animation interval, but only repaint the laser line,
       // not the entire viewfinder mask.
